@@ -1,0 +1,79 @@
+# ═══════════════════════════════════════════════════════════════════
+#  PolicyPipeline Configuration
+# ═══════════════════════════════════════════════════════════════════
+
+# ── Paths ───────────────────────────────────────────────────────────
+paths:
+  pdfs:      data/pdfs
+  markdown:  data/markdown
+  cleaned:   data/cleaned
+  chunks:    data/chunks
+  final:     data/final
+  chroma_db: chroma_db
+  logs:      logs
+  models:    models
+
+# ── GPU ─────────────────────────────────────────────────────────────
+gpu:
+  force_cuda: true          # Hard-fail if CUDA not available
+  marker_batch_multiplier: 4  # Scales Marker GPU batch size (2-8 for 8 GB VRAM)
+  embedding_batch_size: 128   # Embeddings per GPU batch
+  torch_dtype: float16        # float16 saves VRAM vs float32
+
+# ── PDF Parsing (Marker) ────────────────────────────────────────────
+marker:
+  workers: 4                # Parallel pages (increase for >16 GB RAM)
+  max_pages: null           # null = no limit
+  langs: "English"
+  ocr_all_pages: false      # true = force OCR even on digital PDFs (slower)
+
+# ── Chunking ────────────────────────────────────────────────────────
+chunking:
+  chunk_size: 1500
+  chunk_overlap: 300
+  separators:
+    - "\n\n"
+    - "\n"
+    - ". "
+    - " "
+    - ""
+
+# ── Embeddings ──────────────────────────────────────────────────────
+embeddings:
+  model: "all-MiniLM-L6-v2"   # Fast, good quality. Alt: "all-mpnet-base-v2"
+  device: "cuda"               # Force GPU
+
+# ── ChromaDB ────────────────────────────────────────────────────────
+chroma:
+  collection_name: "policy_chunks"
+  distance_metric: "cosine"
+
+# ── Ollama / Qwen ───────────────────────────────────────────────────
+llm:
+  model: "qwen2.5:7b"
+  context_length: 16000       # Safe ceiling for 8 GB VRAM
+  temperature: 0.1            # Low for deterministic extraction
+  top_p: 0.9
+  num_gpu_layers: 35          # All layers on GPU for 7B; lower if VRAM OOM
+  num_thread: 8               # CPU threads for non-GPU layers
+
+# ── Policy Retrieval ────────────────────────────────────────────────
+retrieval:
+  n_results: 20               # Chunks per query category
+  query_categories:
+    - "policy rule requirement obligation"
+    - "compliance violation penalty enforcement"
+    - "prohibited actions restrictions forbidden"
+    - "data handling privacy security"
+    - "governance accountability oversight"
+    - "procedure process workflow approval"
+
+# ── Validation ──────────────────────────────────────────────────────
+validation:
+  enabled: true
+  max_retries: 2
+
+# ── Logging ─────────────────────────────────────────────────────────
+logging:
+  level: INFO                 # DEBUG | INFO | WARNING | ERROR
+  file: logs/pipeline.log
