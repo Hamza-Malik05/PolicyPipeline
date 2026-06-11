@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Project data (large/generated, do not commit)
+data/pdfs/*
+data/markdown/*
+data/cleaned/*
+data/chunks/*
+data/final/*
+!data/pdfs/.gitkeep
+!data/markdown/.gitkeep
+!data/cleaned/.gitkeep
+!data/chunks/.gitkeep
+!data/final/.gitkeep
+
+# Vector store
+chroma_db/
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# Models
+models/*
+!models/.gitkeep
+
+# Config secrets / local overrides
+config.local.yaml
+.env
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
