@@ -17,12 +17,12 @@ data/pdfs/*
 data/markdown/*
 data/cleaned/*
 data/chunks/*
-data/final/*
+data/final1/*
 !data/pdfs/.gitkeep
 !data/markdown/.gitkeep
 !data/cleaned/.gitkeep
 !data/chunks/.gitkeep
-!data/final/.gitkeep
+!data/final1/.gitkeep
 
 # Vector store
 chroma_db/
